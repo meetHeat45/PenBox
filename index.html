@@ -85,29 +85,37 @@ h1 {
 
 <script>
 const puzzles = [
-    "x + 1/x = 5 <br><br> x = ?",
-    "x - 1/x = 2 <br><br> x = ?",
-    "x + 4/x = 5 <br><br> x = ?",
-    "x + 9/x = 6 <br><br> x = ?",
-    "x - 4/x = 5 <br><br> x = ?",
-    "x² + 1/x² = 10 <br><br> x = ?",
-    "x + 16/x = 8 <br><br> x = ?",
-    "x - 9/x = 0 <br><br> x = ?",
-    "x² - 5x + 6 = 0 <br><br> x = ?",
-    "x + 25/x = 10 <br><br> x = ?",
-    "x² + 6x + 1 = 0 <br><br> x = ?",
-    "x - 16/x = 0 <br><br> x = ?"
+    "x + 2/x = 3 <br><br> x = ?",
+    "x - 3/x = 4 <br><br> x = ?",
+    "x² + 4x + 1 = 0 <br><br> x = ?",
+    "x + 5/x = 6 <br><br> x = ?",
+    "x² - 7x + 10 = 0 <br><br> x = ?",
+    "x - 1/x = 1 <br><br> x = ?",
+    "x + 8/x = 6 <br><br> x = ?",
+    "x² + 2x - 3 = 0 <br><br> x = ?",
+    "x - 2/x = 3 <br><br> x = ?",
+    "x² - 4x + 3 = 0 <br><br> x = ?",
+    "x + 3/x = 4 <br><br> x = ?",
+    "x² + x - 6 = 0 <br><br> x = ?"
 ];
 
+let index = 0;
+
 function changePuzzle() {
-    let random = Math.floor(Math.random() * puzzles.length);
-    document.getElementById("puzzle").innerHTML = puzzles[random];
+    document.getElementById("puzzle").innerHTML = puzzles[index];
+
+    index++;
+
+    // Loop back after last puzzle
+    if (index >= puzzles.length) {
+        index = 0;
+    }
 }
 
 // Load first puzzle
 changePuzzle();
 
-// Auto change every 10 minutes (600000 ms)
+// Auto change every 10 minutes
 setInterval(changePuzzle, 600000);
 </script>
 
