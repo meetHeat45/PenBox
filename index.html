@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Math Puzzle</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #020617, #0f172a);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Subscribe Button */
+.subscribe {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #ef4444;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.subscribe:hover {
+    background: #dc2626;
+}
+
+/* Card */
+.container {
+    text-align: center;
+    padding: 40px 30px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    max-width: 400px;
+    width: 90%;
+}
+
+h1 {
+    font-size: 2.2rem;
+    margin-bottom: 5px;
+}
+
+.channel {
+    color: #94a3b8;
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+}
+
+.puzzle {
+    font-size: 2.6rem;
+    font-weight: bold;
+    margin: 25px 0;
+    line-height: 1.5;
+}
+
+.comment {
+    color: #facc15;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.footer {
+    margin-top: 20px;
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.btn {
+    margin-top: 20px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #22c55e;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+.btn:hover {
+    background: #16a34a;
+}
+</style>
+</head>
+
+<body>
+
+<div class="subscribe">Subscribe</div>
+
+<div class="container">
+    <h1>Daily Math Puzzle</h1>
+    <div class="channel">PenBox</div>
+
+    <div class="puzzle" id="puzzle"></div>
+
+    <div class="comment">Comment your answer 👇</div>
+
+    <button class="btn" onclick="changePuzzle()">Next Puzzle</button>
+
+    <div class="footer">
+        Think before you solve 🧠
+    </div>
+</div>
+
+<script>
+const puzzles = [
+
+    "x + 1/x = 5 <br><br> x = ?",
+    "x - 1/x = 2 <br><br> x = ?",
+    "x + 4/x = 5 <br><br> x = ?",
+    "x + 9/x = 6 <br><br> x = ?",
+    "x - 4/x = 5 <br><br> x = ?",
+    "x² + 1/x² = 10 <br><br> x = ?",
+    "x + 16/x = 8 <br><br> x = ?",
+    "x - 9/x = 0 <br><br> x = ?",
+    "x² - 5x + 6 = 0 <br><br> x = ?",
+    "x + 25/x = 10 <br><br> x = ?",
+    "x² + 6x + 1 = 0 <br><br> x = ?",
+    "x - 16/x = 0 <br><br> x = ?"
+
+];
+
+function changePuzzle() {
+    let random = Math.floor(Math.random() * puzzles.length);
+    document.getElementById("puzzle").innerHTML = puzzles[random];
+}
+
+// Load first puzzle
+changePuzzle();
+</script>
+
+</body>
+      </html>
