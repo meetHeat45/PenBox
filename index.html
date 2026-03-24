@@ -12,6 +12,7 @@ body {
     background: linear-gradient(135deg, #020617, #0f172a);
     color: white;
     min-height: 100vh;
+    overflow: hidden;
 
     display: flex;
     flex-direction: column;
@@ -19,26 +20,47 @@ body {
     align-items: center;
 }
 
-/* Subscribe Button */
-.subscribe {
+/* ⏳ Timer Bar Container */
+.timer-container {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    background: #ef4444;
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: 0.2s;
-    user-select: none;
+    top: 0;
+    left: 0;
+    width: 100%;
 }
-.subscribe:hover {
-    background: #dc2626;
+
+/* Time Text */
+.timer-text {
+    text-align: center;
+    font-size: 1rem;
+    padding: 6px;
+    background: #0f172a;
+    letter-spacing: 1px;
+}
+
+/* Progress Bar */
+.progress-bar {
+    height: 6px;
+    width: 100%;
+    background: #22c55e;
+    transition: width 1s linear;
+}
+
+/* Panic Mode */
+.panic {
+    background: #ef4444 !important;
+    animation: panicPulse 0.5s infinite;
+}
+
+@keyframes panicPulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.4; }
+    100% { opacity: 1; }
 }
 
 h1 {
     font-size: 2.5rem;
     margin-bottom: 5px;
+    margin-top: 40px;
 }
 
 .channel {
@@ -61,7 +83,7 @@ h1 {
     margin-top: 10px;
 }
 
-/* 🔥 Highlighted Ragebait Footer */
+/* 🔥 Ragebait Footer */
 .footer {
     margin-top: 25px;
     font-size: 1.2rem;
@@ -73,18 +95,21 @@ h1 {
     animation: pulse 1.5s infinite;
 }
 
-/* 🔥 Pulse Animation */
 @keyframes pulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.08); opacity: 0.8; }
-    100% { transform: scale(1); opacity: 1; }
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
 }
 </style>
 </head>
 
 <body>
 
-<div class="subscribe">Subscribe</div>
+<!-- ⏳ TIMER -->
+<div class="timer-container">
+    <div class="timer-text" id="timerText">Time Left: 60s</div>
+    <div class="progress-bar" id="progressBar"></div>
+</div>
 
 <h1>Daily Math Puzzle</h1>
 <div class="channel">PenBox</div>
@@ -114,22 +139,42 @@ const puzzles = [
 ];
 
 let index = 0;
+let timeLeft = 60;
+const totalTime = 60;
 
 function changePuzzle() {
     document.getElementById("puzzle").innerHTML = puzzles[index];
+    index = (index + 1) % puzzles.length;
 
-    index++;
+    resetTimer();
+}
 
-    if (index >= puzzles.length) {
-        index = 0;
+function resetTimer() {
+    timeLeft = totalTime;
+    document.getElementById("progressBar").classList.remove("panic");
+}
+
+function updateTimer() {
+    timeLeft--;
+
+    document.getElementById("timerText").innerText = "Time Left: " + timeLeft + "s";
+
+    let progress = (timeLeft / totalTime) * 100;
+    document.getElementById("progressBar").style.width = progress + "%";
+
+    // 🚨 Panic mode (last 10 sec)
+    if (timeLeft <= 10) {
+        document.getElementById("progressBar").classList.add("panic");
+    }
+
+    if (timeLeft <= 0) {
+        changePuzzle();
     }
 }
 
-// Load first puzzle
+// Init
 changePuzzle();
-
-// Auto change every 10 minutes
-setInterval(changePuzzle, 600000);
+setInterval(updateTimer, 1000);
 </script>
 
 </body>
