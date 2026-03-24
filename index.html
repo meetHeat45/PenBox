@@ -9,61 +9,46 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: #000814;
+    background: radial-gradient(circle at center, #001d3d, #000814);
     color: white;
     overflow: hidden;
 }
 
+/* HEADER */
+.header {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-size: 0.9rem;
+}
+.hook { color: #f43f5e; font-weight: bold; }
+.watch { color: #22c55e; }
+.combo { color: #f97316; }
+
 /* SUBSCRIBE */
 .subscribe {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 15px;
+    right: 15px;
     background: #ff3b3b;
     padding: 8px 14px;
     border-radius: 8px;
 }
 
-/* CENTER CONTENT */
+/* CENTER */
 .center {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    width: 90%;
-}
-
-h1 {
-    font-size: 2.2rem;
-}
-
-.channel {
-    color: #9ca3af;
-    margin-bottom: 20px;
 }
 
 .puzzle {
     font-size: 3rem;
     font-weight: bold;
-    line-height: 1.4;
-}
-
-/* CHAT (LEFT SIDE STACKED) */
-.chat-box {
-    position: absolute;
-    left: 10px;
-    bottom: 120px;
-    width: 70%;
-}
-
-.chat {
-    background: rgba(255,255,255,0.08);
-    padding: 6px 10px;
-    border-radius: 10px;
-    margin-top: 6px;
-    font-size: 0.85rem;
-    animation: fadeIn 0.3s ease;
+    margin-top: 20px;
+    animation: fadeIn 0.6s ease;
 }
 
 @keyframes fadeIn {
@@ -71,119 +56,160 @@ h1 {
     to {opacity:1;}
 }
 
-/* EMOJIS */
+/* CHAT */
+.chat-box {
+    position: absolute;
+    left: 10px;
+    bottom: 150px;
+    width: 70%;
+}
+.chat {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(6px);
+    padding: 6px 10px;
+    border-radius: 10px;
+    margin-top: 6px;
+    font-size: 0.85rem;
+}
+
+/* EMOJI */
 .emoji {
     position: absolute;
     right: 10px;
     font-size: 1.4rem;
     animation: floatEmoji 4s linear forwards;
 }
-
 @keyframes floatEmoji {
-    0% { transform: translateY(0) translateX(0); opacity: 0; }
-    20% { opacity: 1; }
-    100% { transform: translateY(-300px) translateX(-20px); opacity: 0; }
+    0% {transform: translateY(0); opacity:0;}
+    20% {opacity:1;}
+    100% {transform: translateY(-300px) translateX(-20px); opacity:0;}
 }
 
 /* FOOTER */
 .footer {
     position: absolute;
-    bottom: 90px;
+    bottom: 120px;
     width: 100%;
     text-align: center;
-    color: #ff4d6d;
+    color: #f43f5e;
     font-weight: bold;
 }
 
 /* TIMER */
 .timer-box {
     position: absolute;
-    bottom: 30px;
+    bottom: 50px;
     width: 90%;
     left: 5%;
 }
-
 .timer-text {
     text-align: center;
-    margin-bottom: 5px;
-    color: #22c55e;
+    margin-bottom: 8px;
 }
-
 .progress {
-    height: 8px;
+    height: 10px;
     background: #1e293b;
-    border-radius: 10px;
+    border-radius: 20px;
 }
-
 .progress-bar {
     height: 100%;
     width: 100%;
-    background: #22c55e;
-    border-radius: 10px;
+    background: linear-gradient(90deg, #22c55e, #4ade80);
+    border-radius: 20px;
+    transition: width 0.5s linear;
+}
+.danger { color:#ef4444; animation: blink 0.5s infinite; }
+@keyframes blink {
+    50% {opacity:0.5;}
+}
+
+/* ANSWER */
+.answer {
+    font-size: 2rem;
+    color: #4ade80;
+    margin-top: 10px;
+    text-shadow: 0 0 10px #4ade80;
 }
 </style>
 </head>
 
 <body>
 
+<div class="header">
+    <div class="hook">Only 1% can solve this 😈</div>
+    <div class="watch" id="watch">👁 1.5K watching</div>
+    <div class="combo" id="combo">🔥 Combo: 1</div>
+</div>
+
 <div class="subscribe">Subscribe</div>
 
 <div class="center">
-    <h1>Daily Math Puzzle</h1>
-    <div class="channel">PenBox</div>
-    <div class="puzzle" id="puzzle"></div>
+    <h2>Daily Math Puzzle</h2>
+    <div id="puzzle" class="puzzle"></div>
+    <div id="answer" class="answer"></div>
 </div>
 
 <div class="chat-box" id="chatBox"></div>
 
-<div class="footer">99% people fail this 😈</div>
+<div class="footer">Comment fast 👇</div>
 
 <div class="timer-box">
     <div class="timer-text" id="timer">⏳ 60s</div>
-    <div class="progress">
-        <div class="progress-bar" id="progress"></div>
-    </div>
+    <div class="progress"><div id="progress" class="progress-bar"></div></div>
 </div>
 
 <script>
 
-// PUZZLES
+// PUZZLES + ANSWERS
 const puzzles = [
-"x² - 5x + 6 = 0",
-"x + 1/x = 5",
-"x² - 4x - 5 = 0",
-"x + 6/x = 5"
+{q:"x² - 5x + 6 = 0", a:"2, 3"},
+{q:"x + 1/x = 5", a:"(5±√21)/2"},
+{q:"x² - 4x - 5 = 0", a:"5, -1"},
+{q:"x + 6/x = 5", a:"2, 3"}
 ];
 
-// USERS + COMMENTS
-const users = ["Aman","Riya","Rahul","Priya","Arjun","Sneha","Karan","Aditya"];
+// USERS
+const users = ["Aman","Riya","Rahul","Priya","Arjun","Sneha","Karan","Aditya","Varun","Neha","Yash","Divya","Ankit","Simran","Kabir"];
+
+// COMMENTS
 const comments = [
-"Bhai tough hai 😭","Easy tha 😂","Answer 2?",
-"Wait solving...","Aasaan tha","Tricky hai",
-"Coffee leke aata hu ☕","Overthinking ho gaya"
+"Answer 2 lag raha","Almost aa gaya","Bhai tough hai 😭",
+"Easy tha 😂","Wait solving...","Galat ho gaya",
+"Coffee leke aata hu ☕","Tricky hai","Factorise kar",
+"Multiply kar","Close tha yaar"
 ];
 
 // EMOJIS
 const emojis = ["😂","🔥","😮","😍","😡","👏","😎"];
 
-// PUZZLE
-function changePuzzle() {
+let combo = 1;
+
+function changePuzzle(){
     const p = puzzles[Math.floor(Math.random()*puzzles.length)];
-    document.getElementById("puzzle").innerHTML = p + "<br><br>x = ?";
-    startTimer();
+    document.getElementById("puzzle").innerHTML = p.q + "<br><br>x = ?";
+    document.getElementById("answer").innerText = "";
+    startTimer(p.a);
+    combo++;
+    document.getElementById("combo").innerText = "🔥 Combo: " + combo;
 }
 
-// TIMER
-function startTimer() {
+function startTimer(ans){
     let time = 60;
     let progress = 100;
 
-    const interval = setInterval(() => {
-        document.getElementById("timer").innerText = "⏳ " + time + "s";
+    const interval = setInterval(()=>{
+        const t = document.getElementById("timer");
+        t.innerText = "⏳ " + time + "s";
         document.getElementById("progress").style.width = progress + "%";
 
+        if(time <= 10) t.classList.add("danger");
+
+        if(time === 3){
+            document.getElementById("answer").innerText = "Answer: " + ans;
+        }
+
         time--;
-        progress -= 1.66;
+        progress -= (time>20?1:2);
 
         if(time < 0){
             clearInterval(interval);
@@ -192,40 +218,37 @@ function startTimer() {
     },1000);
 }
 
-// CHAT STACK
-function addChat() {
-    const box = document.getElementById("chatBox");
+// VIEWERS
+let viewers = 1500;
+setInterval(()=>{
+    let change = Math.random()<0.2 ? Math.floor(Math.random()*300) : Math.floor(Math.random()*50-20);
+    viewers += change;
+    if(viewers<1000) viewers=1000;
+    document.getElementById("watch").innerText="👁 "+(viewers/1000).toFixed(1)+"K watching";
+},2000);
 
-    const div = document.createElement("div");
-    div.className = "chat";
-
-    const user = users[Math.floor(Math.random()*users.length)];
-    const text = comments[Math.floor(Math.random()*comments.length)];
-
-    div.innerText = user + ": " + text;
-
+// CHAT
+function addChat(){
+    const box=document.getElementById("chatBox");
+    const div=document.createElement("div");
+    div.className="chat";
+    div.innerText=users[Math.floor(Math.random()*users.length)] + ": " + comments[Math.floor(Math.random()*comments.length)];
     box.appendChild(div);
-
-    if(box.children.length > 5){
-        box.removeChild(box.children[0]);
-    }
+    if(box.children.length>6) box.removeChild(box.children[0]);
 }
 
 // EMOJI
 function addEmoji(){
-    const div = document.createElement("div");
-    div.className = "emoji";
-    div.innerText = emojis[Math.floor(Math.random()*emojis.length)];
-
-    div.style.bottom = "0px";
+    const div=document.createElement("div");
+    div.className="emoji";
+    div.innerText=emojis[Math.floor(Math.random()*emojis.length)];
     document.body.appendChild(div);
-
     setTimeout(()=>div.remove(),4000);
 }
 
 // INTERVALS
-setInterval(addChat, 2000);
-setInterval(addEmoji, 700);
+setInterval(addChat,1500);
+setInterval(addEmoji,700);
 
 // INIT
 changePuzzle();
