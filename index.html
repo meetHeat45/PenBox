@@ -7,63 +7,64 @@
 
 <style>
 body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #020617, #0f172a);
-    color: white;
-    height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #020617, #0f172a);
+    color: white;
+    min-height: 100vh;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Subscribe Button */
 .subscribe {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: #ef4444;
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: 0.2s;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #ef4444;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.2s;
+    user-select: none;
 }
 .subscribe:hover {
-    background: #dc2626;
+    background: #dc2626;
 }
 
 h1 {
-    font-size: 2.5rem;
-    margin-bottom: 5px;
+    font-size: 2.5rem;
+    margin-bottom: 5px;
 }
 
 .channel {
-    color: #94a3b8;
-    margin-bottom: 30px;
-    font-size: 1rem;
+    color: #94a3b8;
+    margin-bottom: 30px;
+    font-size: 1rem;
 }
 
 .puzzle {
-    font-size: 3rem;
-    font-weight: bold;
-    margin: 30px 0;
-    text-align: center;
-    line-height: 1.6;
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 30px 0;
+    text-align: center;
+    line-height: 1.6;
 }
 
 .comment {
-    color: #facc15;
-    font-size: 1rem;
-    margin-top: 10px;
+    color: #facc15;
+    font-size: 1rem;
+    margin-top: 10px;
 }
 
 .footer {
-    margin-top: 25px;
-    color: #64748b;
-    font-size: 0.9rem;
+    margin-top: 25px;
+    color: #64748b;
+    font-size: 0.9rem;
 }
 </style>
 </head>
@@ -80,36 +81,36 @@ h1 {
 <div class="comment">Comment your answer 👇</div>
 
 <div class="footer">
-    Think before you solve 🧠
+    Think before you solve 🧠
 </div>
 
 <script>
 const puzzles = [
-    "x + 1/x = 5 <br><br> x = ?",
-    "x - 2/x = 5 <br><br> x = ?",
-    "x² - 5x + 6 = 0 <br><br> x = ?",
-    "x + 6/x = 5 <br><br> x = ?",
-    "x² + 3x - 10 = 0 <br><br> x = ?",
-    "x - 4/x = 3 <br><br> x = ?",
-    "x + 9/x = 6 <br><br> x = ?",
-    "x² - 6x + 8 = 0 <br><br> x = ?",
-    "x - 5/x = 4 <br><br> x = ?",
-    "x² + 2x - 8 = 0 <br><br> x = ?",
-    "x + 4/x = 5 <br><br> x = ?",
-    "x² - 3x - 4 = 0 <br><br> x = ?"
+    "x + 1/x = 5 <br><br> x = ?",
+    "x - 2/x = 5 <br><br> x = ?",
+    "x² - 5x + 6 = 0 <br><br> x = ?",
+    "x + 6/x = 5 <br><br> x = ?",
+    "x² + 3x - 10 = 0 <br><br> x = ?",
+    "x - 4/x = 3 <br><br> x = ?",
+    "x + 9/x = 6 <br><br> x = ?",
+    "x² - 6x + 8 = 0 <br><br> x = ?",
+    "x - 5/x = 4 <br><br> x = ?",
+    "x² + 2x - 8 = 0 <br><br> x = ?",
+    "x + 4/x = 5 <br><br> x = ?",
+    "x² - 3x - 4 = 0 <br><br> x = ?"
 ];
 
 let index = 0;
 
 function changePuzzle() {
-    document.getElementById("puzzle").innerHTML = puzzles[index];
+    document.getElementById("puzzle").innerHTML = puzzles[index];
 
-    index++;
+    index++;
 
-    // Loop back after last puzzle
-    if (index >= puzzles.length) {
-        index = 0;
-    }
+    // Loop back after last puzzle
+    if (index >= puzzles.length) {
+        index = 0;
+    }
 }
 
 // Load first puzzle
