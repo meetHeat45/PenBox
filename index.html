@@ -12,20 +12,16 @@ body {
     background: linear-gradient(135deg, #020617, #0f172a);
     color: white;
     min-height: 100vh;
-    overflow: hidden;
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
 /* ⏳ Timer */
 .timer-container {
-    position: absolute;
-    top: 20px; /* 👈 niche shift */
-    left: 0;
     width: 100%;
+    margin-top: 60px;
 }
 
 .timer-text {
@@ -43,7 +39,6 @@ body {
     transition: width 1s linear;
 }
 
-/* 🚨 Panic Mode */
 .panic {
     background: #ef4444 !important;
     animation: panicPulse 0.5s infinite;
@@ -57,22 +52,27 @@ body {
 
 h1 {
     font-size: 2.5rem;
-    margin-bottom: 5px;
-    margin-top: 80px; /* 👈 adjusted spacing */
+    margin: 25px 0 5px 0;
 }
 
 .channel {
     color: #94a3b8;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     font-size: 1rem;
 }
 
 .puzzle {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: bold;
     margin: 30px 0;
     text-align: center;
     line-height: 1.6;
+}
+
+.puzzle img {
+    margin-top: 15px;
+    max-width: 260px;
+    border-radius: 12px;
 }
 
 .comment {
@@ -81,7 +81,6 @@ h1 {
     margin-top: 10px;
 }
 
-/* 🔥 Ragebait Footer */
 .footer {
     margin-top: 25px;
     font-size: 1.2rem;
@@ -103,7 +102,6 @@ h1 {
 
 <body>
 
-<!-- ⏳ TIMER -->
 <div class="timer-container">
     <div class="timer-text" id="timerText">Time Left: 60s</div>
     <div class="progress-bar" id="progressBar"></div>
@@ -122,18 +120,20 @@ h1 {
 
 <script>
 const puzzles = [
-    "x + 1/x = 5 <br><br> x = ?",
-    "x - 2/x = 5 <br><br> x = ?",
-    "x² - 5x + 6 = 0 <br><br> x = ?",
-    "x + 6/x = 5 <br><br> x = ?",
-    "x² + 3x - 10 = 0 <br><br> x = ?",
-    "x - 4/x = 3 <br><br> x = ?",
-    "x + 9/x = 6 <br><br> x = ?",
-    "x² - 6x + 8 = 0 <br><br> x = ?",
-    "x - 5/x = 4 <br><br> x = ?",
-    "x² + 2x - 8 = 0 <br><br> x = ?",
-    "x + 4/x = 5 <br><br> x = ?",
-    "x² - 3x - 4 = 0 <br><br> x = ?"
+    "Find the next number:<br><br> 2, 6, 7, 21, 22, ?",
+
+    "Solve mentally:<br><br> 100 ÷ 5 × 2 + 10 = ?",
+
+    // 🔺 TRIANGLE IMAGE PUZZLE
+    "<img src='https://i.imgur.com/8QfQ5KX.png'><br>How many triangles?",
+
+    "Find the missing number:<br><br> 9, 19, 29, ?, 49",
+
+    "Brain teaser 😈<br><br> If 5 + 3 = 28<br>6 + 2 = 24<br>7 + 4 = ?",
+
+    "How many squares are in a chessboard? ♟️",
+
+    "Trick question 🤔<br><br> 1 kg iron or 1 kg cotton — which is heavier?"
 ];
 
 let index = 0;
