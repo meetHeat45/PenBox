@@ -3,93 +3,104 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Math Puzzle</title>
+<title>Math Live</title>
 
 <style>
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: radial-gradient(circle, #020617, #000);
+    background: #000814;
     color: white;
-    height: 100vh;
     overflow: hidden;
 }
 
-/* TOP */
+/* SUBSCRIBE */
 .subscribe {
     position: absolute;
     top: 20px;
     right: 20px;
-    background: #ef4444;
+    background: #ff3b3b;
     padding: 8px 14px;
     border-radius: 8px;
 }
 
-/* CENTER */
+/* CENTER CONTENT */
 .center {
     position: absolute;
-    top: 45%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+    width: 90%;
 }
 
-h1 { font-size: 2.5rem; }
-.channel { color: #94a3b8; }
+h1 {
+    font-size: 2.2rem;
+}
+
+.channel {
+    color: #9ca3af;
+    margin-bottom: 20px;
+}
 
 .puzzle {
     font-size: 3rem;
     font-weight: bold;
-    margin-top: 20px;
+    line-height: 1.4;
 }
 
-/* COMMENTS */
-.comment {
+/* CHAT (LEFT SIDE STACKED) */
+.chat-box {
     position: absolute;
     left: 10px;
-    background: rgba(255,255,255,0.08);
-    padding: 6px 12px;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    animation: floatChat 6s ease-out forwards;
+    bottom: 120px;
+    width: 70%;
 }
 
-@keyframes floatChat {
-    0% { transform: translateY(0) translateX(0); opacity: 0; }
-    10% { opacity: 1; }
-    100% { transform: translateY(-120px) translateX(20px); opacity: 0; }
+.chat {
+    background: rgba(255,255,255,0.08);
+    padding: 6px 10px;
+    border-radius: 10px;
+    margin-top: 6px;
+    font-size: 0.85rem;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {opacity:0; transform: translateY(10px);}
+    to {opacity:1;}
 }
 
 /* EMOJIS */
 .emoji {
     position: absolute;
     right: 10px;
-    font-size: 1.6rem;
-    animation: floatEmoji 5s ease-out forwards;
+    font-size: 1.4rem;
+    animation: floatEmoji 4s linear forwards;
 }
 
 @keyframes floatEmoji {
-    0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
     20% { opacity: 1; }
-    100% { transform: translateY(-250px) translateX(-30px) rotate(30deg); opacity: 0; }
+    100% { transform: translateY(-300px) translateX(-20px); opacity: 0; }
 }
 
 /* FOOTER */
 .footer {
     position: absolute;
-    bottom: 60px;
+    bottom: 90px;
     width: 100%;
     text-align: center;
-    font-size: 1rem;
-    color: #f43f5e;
+    color: #ff4d6d;
+    font-weight: bold;
 }
 
-/* TIMER BAR */
+/* TIMER */
 .timer-box {
     position: absolute;
-    bottom: 20px;
-    width: 80%;
-    left: 10%;
+    bottom: 30px;
+    width: 90%;
+    left: 5%;
 }
 
 .timer-text {
@@ -99,18 +110,16 @@ h1 { font-size: 2.5rem; }
 }
 
 .progress {
-    width: 100%;
-    height: 6px;
+    height: 8px;
     background: #1e293b;
     border-radius: 10px;
-    overflow: hidden;
 }
 
 .progress-bar {
     height: 100%;
     width: 100%;
     background: #22c55e;
-    transition: width 1s linear;
+    border-radius: 10px;
 }
 </style>
 </head>
@@ -125,6 +134,8 @@ h1 { font-size: 2.5rem; }
     <div class="puzzle" id="puzzle"></div>
 </div>
 
+<div class="chat-box" id="chatBox"></div>
+
 <div class="footer">99% people fail this 😈</div>
 
 <div class="timer-box">
@@ -138,21 +149,22 @@ h1 { font-size: 2.5rem; }
 
 // PUZZLES
 const puzzles = [
-"x² - 4x - 5 = 0","x + 1/x = 5","x² - 5x + 6 = 0","x + 6/x = 5",
-"x² + 3x - 10 = 0","x - 4/x = 3","x + 9/x = 6","x² - 6x + 8 = 0"
+"x² - 5x + 6 = 0",
+"x + 1/x = 5",
+"x² - 4x - 5 = 0",
+"x + 6/x = 5"
 ];
 
-// USERS
-const users = ["Aman","Riya","Rahul","Priya","Arjun","Sneha","Vikram","Pooja","Rohan","Ankit","Simran","Kabir","Neha","Aditya","Megha","Karan"];
-
-// COMMENTS
+// USERS + COMMENTS
+const users = ["Aman","Riya","Rahul","Priya","Arjun","Sneha","Karan","Aditya"];
 const comments = [
-"Bhai tough hai 😭","Easy tha 😂","Answer 2?","Wait solving...",
-"Overthinking kar diya","Coffee leke aata hu ☕","Aasaan tha","Tricky hai"
+"Bhai tough hai 😭","Easy tha 😂","Answer 2?",
+"Wait solving...","Aasaan tha","Tricky hai",
+"Coffee leke aata hu ☕","Overthinking ho gaya"
 ];
 
 // EMOJIS
-const emojis = ["😂","🔥","😮","😍","😡","👏","💀","😎"];
+const emojis = ["😂","🔥","😮","😍","😡","👏","😎"];
 
 // PUZZLE
 function changePuzzle() {
@@ -180,23 +192,27 @@ function startTimer() {
     },1000);
 }
 
-// COMMENTS
-function generateComment(){
+// CHAT STACK
+function addChat() {
+    const box = document.getElementById("chatBox");
+
     const div = document.createElement("div");
-    div.className = "comment";
+    div.className = "chat";
 
     const user = users[Math.floor(Math.random()*users.length)];
-    const comment = comments[Math.floor(Math.random()*comments.length)];
+    const text = comments[Math.floor(Math.random()*comments.length)];
 
-    div.innerText = user + ": " + comment;
-    div.style.bottom = Math.random()*200 + "px";
+    div.innerText = user + ": " + text;
 
-    document.body.appendChild(div);
-    setTimeout(()=>div.remove(),6000);
+    box.appendChild(div);
+
+    if(box.children.length > 5){
+        box.removeChild(box.children[0]);
+    }
 }
 
 // EMOJI
-function generateEmoji(){
+function addEmoji(){
     const div = document.createElement("div");
     div.className = "emoji";
     div.innerText = emojis[Math.floor(Math.random()*emojis.length)];
@@ -204,12 +220,12 @@ function generateEmoji(){
     div.style.bottom = "0px";
     document.body.appendChild(div);
 
-    setTimeout(()=>div.remove(),5000);
+    setTimeout(()=>div.remove(),4000);
 }
 
 // INTERVALS
-setInterval(generateComment, 2000);
-setInterval(generateEmoji, 700);
+setInterval(addChat, 2000);
+setInterval(addEmoji, 700);
 
 // INIT
 changePuzzle();
