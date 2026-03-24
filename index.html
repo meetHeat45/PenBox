@@ -12,6 +12,7 @@ body {
     background: linear-gradient(135deg, #020617, #0f172a);
     color: white;
     height: 100vh;
+    overflow: hidden;
 
     display: flex;
     flex-direction: column;
@@ -19,7 +20,6 @@ body {
     align-items: center;
 }
 
-/* Subscribe Button */
 .subscribe {
     position: absolute;
     top: 20px;
@@ -29,41 +29,70 @@ body {
     border-radius: 8px;
     font-size: 0.85rem;
     cursor: pointer;
-    transition: 0.2s;
-}
-.subscribe:hover {
-    background: #dc2626;
 }
 
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 5px;
+.top-bar {
+    position: absolute;
+    top: 20px;
+    left: 20px;
 }
 
-.channel {
-    color: #94a3b8;
-    margin-bottom: 30px;
-    font-size: 1rem;
-}
+.timer { color: #22c55e; font-weight: bold; }
+.combo { color: #f97316; margin-top: 5px; }
+
+h1 { font-size: 2.5rem; }
+.channel { color: #94a3b8; margin-bottom: 30px; }
 
 .puzzle {
     font-size: 3rem;
     font-weight: bold;
-    margin: 30px 0;
     text-align: center;
     line-height: 1.6;
 }
 
-.comment {
-    color: #facc15;
-    font-size: 1rem;
-    margin-top: 10px;
+/* COMMENTS */
+.comment-box {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 300px;
 }
 
-.footer {
-    margin-top: 25px;
-    color: #64748b;
-    font-size: 0.9rem;
+.comment {
+    position: absolute;
+    left: 10px;
+    background: rgba(255,255,255,0.1);
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    animation: floatUp 10s linear forwards;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(-500px); opacity: 0; }
+}
+
+/* EMOJIS */
+.emoji-box {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 150px;
+}
+
+.emoji {
+    position: absolute;
+    right: 10px;
+    font-size: 1.5rem;
+    animation: floatEmoji 7s linear forwards;
+}
+
+@keyframes floatEmoji {
+    0% { transform: translateY(0); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(-600px); opacity: 0; }
 }
 </style>
 </head>
@@ -72,51 +101,112 @@ h1 {
 
 <div class="subscribe">Subscribe</div>
 
+<div class="top-bar">
+    <div class="timer" id="timer">⏳ 60s</div>
+    <div class="combo" id="combo">🔥 Combo: 0</div>
+</div>
+
 <h1>Daily Math Puzzle</h1>
 <div class="channel">PenBox</div>
 
 <div class="puzzle" id="puzzle"></div>
 
-<div class="comment">Comment your answer 👇</div>
-
-<div class="footer">
-    Think before you solve 🧠
-</div>
+<div class="comment-box" id="commentBox"></div>
+<div class="emoji-box" id="emojiBox"></div>
 
 <script>
+// 40 PUZZLES
 const puzzles = [
-    "x + 1/x = 5 <br><br> x = ?",
-    "x - 2/x = 5 <br><br> x = ?",
-    "x² - 5x + 6 = 0 <br><br> x = ?",
-    "x + 6/x = 5 <br><br> x = ?",
-    "x² + 3x - 10 = 0 <br><br> x = ?",
-    "x - 4/x = 3 <br><br> x = ?",
-    "x + 9/x = 6 <br><br> x = ?",
-    "x² - 6x + 8 = 0 <br><br> x = ?",
-    "x - 5/x = 4 <br><br> x = ?",
-    "x² + 2x - 8 = 0 <br><br> x = ?",
-    "x + 4/x = 5 <br><br> x = ?",
-    "x² - 3x - 4 = 0 <br><br> x = ?"
+"x + 1/x = 5", "x - 2/x = 5",
+"x² - 5x + 6 = 0", "x + 6/x = 5",
+"x² + 3x - 10 = 0", "x - 4/x = 3",
+"x + 9/x = 6", "x² - 6x + 8 = 0",
+"x - 5/x = 4", "x² + 2x - 8 = 0",
+"x + 4/x = 5", "x² - 3x - 4 = 0",
+"x + 2/x = 4", "x - 3/x = 2",
+"x² - 7x + 10 = 0", "x + 8/x = 6",
+"x² + x - 6 = 0", "x - 6/x = 5",
+"x + 5/x = 6", "x² - 4x - 5 = 0",
+"x + 3/x = 4", "x² + 4x - 12 = 0",
+"x - 7/x = 6", "x² - 8x + 15 = 0",
+"x + 7/x = 8", "x² + 5x - 6 = 0",
+"x - 8/x = 7", "x² - 9x + 20 = 0",
+"x + 10/x = 7", "x² + 6x - 16 = 0",
+"x - 9/x = 8", "x² - 10x + 21 = 0",
+"x + 11/x = 9", "x² + 7x - 18 = 0",
+"x - 10/x = 9", "x² - 11x + 24 = 0",
+"x + 12/x = 10", "x² + 8x - 20 = 0"
 ];
 
-let index = 0;
+// USERS
+const users = ["Aman","Riya","Rahul","Priya","Arjun","Sneha","Vikram","Pooja","Rohan","Ankit","Simran","Kabir","Neha","Aditya","Megha","Karan","Tanvi","Yash","Sanya","Varun","Deepak","Nisha","Aryan","Divya","Harsh","Payal","Ritik","Muskan","Abhishek","Isha","Manav","Kriti"];
 
+// COMMENTS
+const comments = ["Easy tha 😂","Bhai tough hai 😭","Answer 2 hai kya?","Wait solving...","गलत हो गया 😭","Ye kya tha bhai 😵","3 aa raha hai","Too easy bro 😎","Dimag ghoom gaya","Kal wala easy tha","Aaj hard hai 🔥","Answer 4?","Samajh nahi aa raha","Exam me ayega kya?","Ye trick wala hai","Almost ho gaya","गलत calculation 😭","Coffee peeke aata hu ☕","Repeat karo bhai","Speed badhao","Nice question 👍","Confusing hai 😵","Answer 1 lag raha","Practice chahiye","Done bro 😎","Wait wait 😭","Tricky hai","Aasaan tha actually","Overthinking kar diya","Solution batao","Iska answer kya hai??","Thoda aur time chahiye"];
+
+// EMOJIS
+const emojis = ["😂","🔥","😮","😍","😡","👏","💀","😎","😱"];
+
+// PUZZLE
 function changePuzzle() {
-    document.getElementById("puzzle").innerHTML = puzzles[index];
-
-    index++;
-
-    // Loop back after last puzzle
-    if (index >= puzzles.length) {
-        index = 0;
-    }
+    const index = Math.floor(Math.random() * puzzles.length);
+    document.getElementById("puzzle").innerHTML = puzzles[index] + "<br><br>x = ?";
+    startTimer();
 }
 
-// Load first puzzle
+// TIMER (60s)
+let combo = 0;
+function startTimer() {
+    let time = 60;
+    combo++;
+    document.getElementById("combo").innerText = "🔥 Combo: " + combo;
+
+    let interval = setInterval(() => {
+        document.getElementById("timer").innerText = "⏳ " + time + "s";
+        time--;
+
+        if (time < 0) {
+            clearInterval(interval);
+            changePuzzle();
+        }
+    }, 1000);
+}
+
+// COMMENTS
+function generateComment() {
+    const box = document.getElementById("commentBox");
+    const div = document.createElement("div");
+    div.className = "comment";
+
+    const user = users[Math.floor(Math.random() * users.length)];
+    const comment = comments[Math.floor(Math.random() * comments.length)];
+
+    div.innerText = user + ": " + comment;
+    div.style.bottom = Math.random() * 50 + "px";
+
+    box.appendChild(div);
+    setTimeout(() => div.remove(), 10000);
+}
+
+// EMOJIS
+function generateEmoji() {
+    const box = document.getElementById("emojiBox");
+    const div = document.createElement("div");
+    div.className = "emoji";
+
+    div.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    box.appendChild(div);
+
+    setTimeout(() => div.remove(), 7000);
+}
+
+// INTERVALS
+setInterval(generateComment, 1800);
+setInterval(generateEmoji, 900);
+
+// INIT
 changePuzzle();
 
-// Auto change every 10 minutes
-setInterval(changePuzzle, 600000);
 </script>
 
 </body>
