@@ -14,19 +14,19 @@ body {
     overflow: hidden;
 }
 
-/* TOP */
+/* TITLE */
 .top {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 60px;
     font-weight: bold;
     color: #f43f5e;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
 }
 
-/* CENTER */
+/* CENTER PUZZLE */
 .center {
     position: absolute;
-    top: 45%;
+    top: 48%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -36,14 +36,15 @@ body {
     font-size: 3rem;
     font-weight: bold;
     line-height: 1.5;
+    text-shadow: 0 0 8px rgba(255,255,255,0.2);
 }
 
-/* RIGHT COMMENTS */
+/* COMMENTS LEFT */
 .comment-box {
     position: absolute;
-    right: 10px;
-    bottom: 150px;
-    width: 55%;
+    left: 10px;
+    bottom: 200px;
+    width: 65%;
 }
 
 .comment {
@@ -52,19 +53,13 @@ body {
     border-radius: 10px;
     margin-top: 6px;
     font-size: 0.85rem;
-    animation: fadeOut 6s forwards;
+    opacity: 0.9;
 }
 
-@keyframes fadeOut {
-    0% {opacity:0;}
-    10% {opacity:1;}
-    100% {opacity:0;}
-}
-
-/* LEFT EMOJIS */
+/* EMOJI RIGHT */
 .emoji {
     position: absolute;
-    left: 10px;
+    right: 15px;
     font-size: 1.5rem;
     animation: floatUp 5s linear forwards;
 }
@@ -72,41 +67,46 @@ body {
 @keyframes floatUp {
     0% {transform: translateY(0); opacity:0;}
     20% {opacity:1;}
-    100% {transform: translateY(-300px) translateX(20px); opacity:0;}
+    100% {transform: translateY(-300px) translateX(-20px); opacity:0;}
 }
 
 /* FOOTER */
 .footer {
     position: absolute;
-    bottom: 40px;
+    bottom: 90px;
     width: 90%;
     left: 5%;
-}
-
-.timer-text {
-    text-align: center;
-    margin-bottom: 6px;
-    color: #22c55e;
-    font-weight: bold;
 }
 
 .combo {
     text-align: center;
     color: #f97316;
     margin-bottom: 6px;
+    font-weight: bold;
 }
 
+.timer-text {
+    text-align: center;
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+    color: #4ade80;
+    font-weight: bold;
+}
+
+/* PROGRESS BAR */
 .progress {
-    height: 8px;
+    height: 10px;
     background: #1e293b;
-    border-radius: 10px;
+    border-radius: 20px;
+    overflow: hidden;
 }
 
 .progress-bar {
     height: 100%;
     width: 100%;
-    background: #22c55e;
-    border-radius: 10px;
+    background: linear-gradient(90deg, #22c55e, #4ade80);
+    border-radius: 20px;
+    box-shadow: 0 0 12px #22c55e;
     transition: width 1s linear;
 }
 
@@ -139,7 +139,7 @@ body {
 // SOUND
 const tick = new Audio("https://www.soundjay.com/clock/sounds/clock-ticking-1.mp3");
 
-// USER INTERACTION FIX
+// unlock audio
 document.body.addEventListener("click", () => {
     tick.play();
 }, { once: true });
@@ -180,11 +180,11 @@ let currentType = "general";
 // DETECT TYPE
 function detectType(p){
     if(p.includes("x²")) return "quadratic";
-    if(p.includes("1/x") || p.includes("/x")) return "rational";
+    if(p.includes("/x")) return "rational";
     return "general";
 }
 
-// PUZZLE CHANGE
+// PUZZLE
 function changePuzzle(){
     const p = puzzles[Math.floor(Math.random()*puzzles.length)];
     document.getElementById("puzzle").innerHTML = p + "<br><br>x = ?";
@@ -204,7 +204,6 @@ function startTimer(){
 
     const interval = setInterval(()=>{
 
-        // SOUND
         tick.currentTime = 0;
         tick.play();
 
@@ -249,7 +248,7 @@ function addComment(){
 
     box.appendChild(div);
 
-    if(box.children.length > 5){
+    if(box.children.length > 3){
         box.removeChild(box.children[0]);
     }
 }
@@ -267,13 +266,4 @@ function addEmoji(){
 }
 
 // INTERVALS
-setInterval(addComment, 2000);
-setInterval(addEmoji, 900);
-
-// INIT
-changePuzzle();
-
-</script>
-
-</body>
-</html>
+set
