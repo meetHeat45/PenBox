@@ -3,267 +3,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Math Live</title>
+<title>Daily Math Puzzle</title>
 
 <style>
 body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(180deg, #020617, #000);
-    color: white;
-    overflow: hidden;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #020617, #0f172a);
+    color: white;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-/* TITLE */
-.top {
-    text-align: center;
-    margin-top: 60px;
-    font-weight: bold;
-    color: #f43f5e;
-    font-size: 1.3rem;
+/* Subscribe Button */
+.subscribe {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #ef4444;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.subscribe:hover {
+    background: #dc2626;
 }
 
-/* CENTER PUZZLE */
-.center {
-    position: absolute;
-    top: 48%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+}
+
+.channel {
+    color: #94a3b8;
+    margin-bottom: 30px;
+    font-size: 1rem;
 }
 
 .puzzle {
-    font-size: 3rem;
-    font-weight: bold;
-    line-height: 1.5;
-    text-shadow: 0 0 8px rgba(255,255,255,0.2);
-}
-
-/* COMMENTS LEFT */
-.comment-box {
-    position: absolute;
-    left: 10px;
-    bottom: 200px;
-    width: 65%;
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 30px 0;
+    text-align: center;
+    line-height: 1.6;
 }
 
 .comment {
-    background: rgba(255,255,255,0.08);
-    padding: 6px 10px;
-    border-radius: 10px;
-    margin-top: 6px;
-    font-size: 0.85rem;
-    opacity: 0.9;
+    color: #facc15;
+    font-size: 1rem;
+    margin-top: 10px;
 }
 
-/* EMOJI RIGHT */
-.emoji {
-    position: absolute;
-    right: 15px;
-    font-size: 1.5rem;
-    animation: floatUp 5s linear forwards;
-}
-
-@keyframes floatUp {
-    0% {transform: translateY(0); opacity:0;}
-    20% {opacity:1;}
-    100% {transform: translateY(-300px) translateX(-20px); opacity:0;}
-}
-
-/* FOOTER */
 .footer {
-    position: absolute;
-    bottom: 90px;
-    width: 90%;
-    left: 5%;
-}
-
-.combo {
-    text-align: center;
-    color: #f97316;
-    margin-bottom: 6px;
-    font-weight: bold;
-}
-
-.timer-text {
-    text-align: center;
-    margin-bottom: 8px;
-    font-size: 1.2rem;
-    color: #4ade80;
-    font-weight: bold;
-}
-
-/* PROGRESS BAR */
-.progress {
-    height: 10px;
-    background: #1e293b;
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-.progress-bar {
-    height: 100%;
-    width: 100%;
-    background: linear-gradient(90deg, #22c55e, #4ade80);
-    border-radius: 20px;
-    box-shadow: 0 0 12px #22c55e;
-    transition: width 1s linear;
-}
-
-.danger {
-    color: #ef4444;
+    margin-top: 25px;
+    color: #64748b;
+    font-size: 0.9rem;
 }
 </style>
 </head>
 
 <body>
 
-<div class="top">Only 1% can solve this 😈</div>
+<div class="subscribe">Subscribe</div>
 
-<div class="center">
-    <div id="puzzle" class="puzzle"></div>
-</div>
+<h1>Daily Math Puzzle</h1>
+<div class="channel">PenBox</div>
 
-<div class="comment-box" id="commentBox"></div>
+<div class="puzzle" id="puzzle"></div>
+
+<div class="comment">Comment your answer 👇</div>
 
 <div class="footer">
-    <div class="combo" id="combo">🔥 Combo: 1</div>
-    <div class="timer-text" id="timer">⏳ 60s</div>
-    <div class="progress">
-        <div class="progress-bar" id="progress"></div>
-    </div>
+    Think before you solve 🧠
 </div>
 
 <script>
-
-// SOUND
-const tick = new Audio("https://www.soundjay.com/clock/sounds/clock-ticking-1.mp3");
-
-// unlock audio
-document.body.addEventListener("click", () => {
-    tick.play();
-}, { once: true });
-
-// PUZZLES
 const puzzles = [
-"x² - 5x + 6 = 0",
-"x + 1/x = 5",
-"x² - 4x - 5 = 0",
-"x + 6/x = 5"
+    "x + 1/x = 5 <br><br> x = ?",
+    "x - 2/x = 5 <br><br> x = ?",
+    "x² - 5x + 6 = 0 <br><br> x = ?",
+    "x + 6/x = 5 <br><br> x = ?",
+    "x² + 3x - 10 = 0 <br><br> x = ?",
+    "x - 4/x = 3 <br><br> x = ?",
+    "x + 9/x = 6 <br><br> x = ?",
+    "x² - 6x + 8 = 0 <br><br> x = ?",
+    "x - 5/x = 4 <br><br> x = ?",
+    "x² + 2x - 8 = 0 <br><br> x = ?",
+    "x + 4/x = 5 <br><br> x = ?",
+    "x² - 3x - 4 = 0 <br><br> x = ?"
 ];
 
-// USERS
-const users = ["Aman","Riya","Rahul","Priya","Arjun","Sneha","Karan","Aditya","Varun","Neha"];
+let index = 0;
 
-// COMMENT TYPES
-const quadraticComments = [
-"Factorise kar","Roots 2,3 aa rahe","Discriminant check kar",
-"Easy quadratic hai","D solve kar"
-];
+function changePuzzle() {
+    document.getElementById("puzzle").innerHTML = puzzles[index];
 
-const rationalComments = [
-"Multiply kar le","LCM le","Quadratic banega",
-"x se multiply kar","Equation simplify kar"
-];
+    index++;
 
-const generalComments = [
-"Almost aa gaya","Wait solving...","Bhai tough hai 😭",
-"Easy tha 😂","Coffee leke aata hu ☕"
-];
-
-// EMOJIS
-const emojis = ["😂","🔥","😮","😍","👏","😎"];
-
-let combo = 1;
-let currentType = "general";
-
-// DETECT TYPE
-function detectType(p){
-    if(p.includes("x²")) return "quadratic";
-    if(p.includes("/x")) return "rational";
-    return "general";
+    // Loop back after last puzzle
+    if (index >= puzzles.length) {
+        index = 0;
+    }
 }
 
-// PUZZLE
-function changePuzzle(){
-    const p = puzzles[Math.floor(Math.random()*puzzles.length)];
-    document.getElementById("puzzle").innerHTML = p + "<br><br>x = ?";
-    
-    currentType = detectType(p);
+// Load first puzzle
+changePuzzle();
 
-    combo++;
-    document.getElementById("combo").innerText = "🔥 Combo: " + combo;
+// Auto change every 10 minutes
+setInterval(changePuzzle, 600000);
+</script>
 
-    startTimer();
-}
-
-// TIMER
-function startTimer(){
-    let time = 60;
-    let progress = 100;
-
-    const interval = setInterval(()=>{
-
-        tick.currentTime = 0;
-        tick.play();
-
-        const t = document.getElementById("timer");
-
-        t.innerText = "⏳ " + time + "s";
-        document.getElementById("progress").style.width = progress + "%";
-
-        if(time <= 10){
-            t.classList.add("danger");
-        } else {
-            t.classList.remove("danger");
-        }
-
-        time--;
-        progress -= 1.66;
-
-        if(time < 0){
-            clearInterval(interval);
-            changePuzzle();
-        }
-
-    }, time > 10 ? 1000 : 700);
-}
-
-// COMMENTS
-function addComment(){
-    const box = document.getElementById("commentBox");
-    const div = document.createElement("div");
-    div.className = "comment";
-
-    let pool;
-
-    if(currentType === "quadratic") pool = quadraticComments;
-    else if(currentType === "rational") pool = rationalComments;
-    else pool = generalComments;
-
-    const user = users[Math.floor(Math.random()*users.length)];
-    const text = pool[Math.floor(Math.random()*pool.length)];
-
-    div.innerText = user + ": " + text;
-
-    box.appendChild(div);
-
-    if(box.children.length > 3){
-        box.removeChild(box.children[0]);
-    }
-}
-
-// EMOJIS
-function addEmoji(){
-    const div = document.createElement("div");
-    div.className = "emoji";
-    div.innerText = emojis[Math.floor(Math.random()*emojis.length)];
-
-    div.style.bottom = "0px";
-    document.body.appendChild(div);
-
-    setTimeout(()=>div.remove(),5000);
-}
-
-// INTERVALS
-set
+</body>
+</html>
