@@ -9,36 +9,24 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: radial-gradient(circle at center, #001d3d, #000814);
+    background: linear-gradient(180deg, #020617, #000);
     color: white;
     overflow: hidden;
 }
 
-/* HEADER */
-.header {
-    position: absolute;
-    top: 10px;
-    left: 15px;
-    font-size: 0.9rem;
-}
-.hook { color: #f43f5e; font-weight: bold; }
-.watch { color: #22c55e; }
-.combo { color: #f97316; }
-
-/* SUBSCRIBE */
-.subscribe {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: #ff3b3b;
-    padding: 8px 14px;
-    border-radius: 8px;
+/* TOP */
+.top {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #f43f5e;
+    font-size: 1.2rem;
 }
 
 /* CENTER */
 .center {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -47,208 +35,240 @@ body {
 .puzzle {
     font-size: 3rem;
     font-weight: bold;
-    margin-top: 20px;
-    animation: fadeIn 0.6s ease;
+    line-height: 1.5;
 }
 
-@keyframes fadeIn {
-    from {opacity:0; transform: translateY(10px);}
-    to {opacity:1;}
-}
-
-/* CHAT */
-.chat-box {
+/* RIGHT COMMENTS */
+.comment-box {
     position: absolute;
-    left: 10px;
+    right: 10px;
     bottom: 150px;
-    width: 70%;
+    width: 55%;
 }
-.chat {
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(6px);
+
+.comment {
+    background: rgba(255,255,255,0.08);
     padding: 6px 10px;
     border-radius: 10px;
     margin-top: 6px;
     font-size: 0.85rem;
+    animation: fadeOut 6s forwards;
 }
 
-/* EMOJI */
+@keyframes fadeOut {
+    0% {opacity:0;}
+    10% {opacity:1;}
+    100% {opacity:0;}
+}
+
+/* LEFT EMOJIS */
 .emoji {
     position: absolute;
-    right: 10px;
-    font-size: 1.4rem;
-    animation: floatEmoji 4s linear forwards;
+    left: 10px;
+    font-size: 1.5rem;
+    animation: floatUp 5s linear forwards;
 }
-@keyframes floatEmoji {
+
+@keyframes floatUp {
     0% {transform: translateY(0); opacity:0;}
     20% {opacity:1;}
-    100% {transform: translateY(-300px) translateX(-20px); opacity:0;}
+    100% {transform: translateY(-300px) translateX(20px); opacity:0;}
 }
 
 /* FOOTER */
 .footer {
     position: absolute;
-    bottom: 120px;
-    width: 100%;
-    text-align: center;
-    color: #f43f5e;
-    font-weight: bold;
-}
-
-/* TIMER */
-.timer-box {
-    position: absolute;
-    bottom: 50px;
+    bottom: 40px;
     width: 90%;
     left: 5%;
 }
+
 .timer-text {
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    color: #22c55e;
+    font-weight: bold;
 }
+
+.combo {
+    text-align: center;
+    color: #f97316;
+    margin-bottom: 6px;
+}
+
 .progress {
-    height: 10px;
+    height: 8px;
     background: #1e293b;
-    border-radius: 20px;
+    border-radius: 10px;
 }
+
 .progress-bar {
     height: 100%;
     width: 100%;
-    background: linear-gradient(90deg, #22c55e, #4ade80);
-    border-radius: 20px;
-    transition: width 0.5s linear;
-}
-.danger { color:#ef4444; animation: blink 0.5s infinite; }
-@keyframes blink {
-    50% {opacity:0.5;}
+    background: #22c55e;
+    border-radius: 10px;
+    transition: width 1s linear;
 }
 
-/* ANSWER */
-.answer {
-    font-size: 2rem;
-    color: #4ade80;
-    margin-top: 10px;
-    text-shadow: 0 0 10px #4ade80;
+.danger {
+    color: #ef4444;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-    <div class="hook">Only 1% can solve this 😈</div>
-    <div class="watch" id="watch">👁 1.5K watching</div>
-    <div class="combo" id="combo">🔥 Combo: 1</div>
-</div>
-
-<div class="subscribe">Subscribe</div>
+<div class="top">Only 1% can solve this 😈</div>
 
 <div class="center">
-    <h2>Daily Math Puzzle</h2>
     <div id="puzzle" class="puzzle"></div>
-    <div id="answer" class="answer"></div>
 </div>
 
-<div class="chat-box" id="chatBox"></div>
+<div class="comment-box" id="commentBox"></div>
 
-<div class="footer">Comment fast 👇</div>
-
-<div class="timer-box">
+<div class="footer">
+    <div class="combo" id="combo">🔥 Combo: 1</div>
     <div class="timer-text" id="timer">⏳ 60s</div>
-    <div class="progress"><div id="progress" class="progress-bar"></div></div>
+    <div class="progress">
+        <div class="progress-bar" id="progress"></div>
+    </div>
 </div>
 
 <script>
 
-// PUZZLES + ANSWERS
+// SOUND
+const tick = new Audio("https://www.soundjay.com/clock/sounds/clock-ticking-1.mp3");
+
+// USER INTERACTION FIX
+document.body.addEventListener("click", () => {
+    tick.play();
+}, { once: true });
+
+// PUZZLES
 const puzzles = [
-{q:"x² - 5x + 6 = 0", a:"2, 3"},
-{q:"x + 1/x = 5", a:"(5±√21)/2"},
-{q:"x² - 4x - 5 = 0", a:"5, -1"},
-{q:"x + 6/x = 5", a:"2, 3"}
+"x² - 5x + 6 = 0",
+"x + 1/x = 5",
+"x² - 4x - 5 = 0",
+"x + 6/x = 5"
 ];
 
 // USERS
-const users = ["Aman","Riya","Rahul","Priya","Arjun","Sneha","Karan","Aditya","Varun","Neha","Yash","Divya","Ankit","Simran","Kabir"];
+const users = ["Aman","Riya","Rahul","Priya","Arjun","Sneha","Karan","Aditya","Varun","Neha"];
 
-// COMMENTS
-const comments = [
-"Answer 2 lag raha","Almost aa gaya","Bhai tough hai 😭",
-"Easy tha 😂","Wait solving...","Galat ho gaya",
-"Coffee leke aata hu ☕","Tricky hai","Factorise kar",
-"Multiply kar","Close tha yaar"
+// COMMENT TYPES
+const quadraticComments = [
+"Factorise kar","Roots 2,3 aa rahe","Discriminant check kar",
+"Easy quadratic hai","D solve kar"
+];
+
+const rationalComments = [
+"Multiply kar le","LCM le","Quadratic banega",
+"x se multiply kar","Equation simplify kar"
+];
+
+const generalComments = [
+"Almost aa gaya","Wait solving...","Bhai tough hai 😭",
+"Easy tha 😂","Coffee leke aata hu ☕"
 ];
 
 // EMOJIS
-const emojis = ["😂","🔥","😮","😍","😡","👏","😎"];
+const emojis = ["😂","🔥","😮","😍","👏","😎"];
 
 let combo = 1;
+let currentType = "general";
 
-function changePuzzle(){
-    const p = puzzles[Math.floor(Math.random()*puzzles.length)];
-    document.getElementById("puzzle").innerHTML = p.q + "<br><br>x = ?";
-    document.getElementById("answer").innerText = "";
-    startTimer(p.a);
-    combo++;
-    document.getElementById("combo").innerText = "🔥 Combo: " + combo;
+// DETECT TYPE
+function detectType(p){
+    if(p.includes("x²")) return "quadratic";
+    if(p.includes("1/x") || p.includes("/x")) return "rational";
+    return "general";
 }
 
-function startTimer(ans){
+// PUZZLE CHANGE
+function changePuzzle(){
+    const p = puzzles[Math.floor(Math.random()*puzzles.length)];
+    document.getElementById("puzzle").innerHTML = p + "<br><br>x = ?";
+    
+    currentType = detectType(p);
+
+    combo++;
+    document.getElementById("combo").innerText = "🔥 Combo: " + combo;
+
+    startTimer();
+}
+
+// TIMER
+function startTimer(){
     let time = 60;
     let progress = 100;
 
     const interval = setInterval(()=>{
+
+        // SOUND
+        tick.currentTime = 0;
+        tick.play();
+
         const t = document.getElementById("timer");
+
         t.innerText = "⏳ " + time + "s";
         document.getElementById("progress").style.width = progress + "%";
 
-        if(time <= 10) t.classList.add("danger");
-
-        if(time === 3){
-            document.getElementById("answer").innerText = "Answer: " + ans;
+        if(time <= 10){
+            t.classList.add("danger");
+        } else {
+            t.classList.remove("danger");
         }
 
         time--;
-        progress -= (time>20?1:2);
+        progress -= 1.66;
 
         if(time < 0){
             clearInterval(interval);
             changePuzzle();
         }
-    },1000);
+
+    }, time > 10 ? 1000 : 700);
 }
 
-// VIEWERS
-let viewers = 1500;
-setInterval(()=>{
-    let change = Math.random()<0.2 ? Math.floor(Math.random()*300) : Math.floor(Math.random()*50-20);
-    viewers += change;
-    if(viewers<1000) viewers=1000;
-    document.getElementById("watch").innerText="👁 "+(viewers/1000).toFixed(1)+"K watching";
-},2000);
+// COMMENTS
+function addComment(){
+    const box = document.getElementById("commentBox");
+    const div = document.createElement("div");
+    div.className = "comment";
 
-// CHAT
-function addChat(){
-    const box=document.getElementById("chatBox");
-    const div=document.createElement("div");
-    div.className="chat";
-    div.innerText=users[Math.floor(Math.random()*users.length)] + ": " + comments[Math.floor(Math.random()*comments.length)];
+    let pool;
+
+    if(currentType === "quadratic") pool = quadraticComments;
+    else if(currentType === "rational") pool = rationalComments;
+    else pool = generalComments;
+
+    const user = users[Math.floor(Math.random()*users.length)];
+    const text = pool[Math.floor(Math.random()*pool.length)];
+
+    div.innerText = user + ": " + text;
+
     box.appendChild(div);
-    if(box.children.length>6) box.removeChild(box.children[0]);
+
+    if(box.children.length > 5){
+        box.removeChild(box.children[0]);
+    }
 }
 
-// EMOJI
+// EMOJIS
 function addEmoji(){
-    const div=document.createElement("div");
-    div.className="emoji";
-    div.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+    const div = document.createElement("div");
+    div.className = "emoji";
+    div.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+
+    div.style.bottom = "0px";
     document.body.appendChild(div);
-    setTimeout(()=>div.remove(),4000);
+
+    setTimeout(()=>div.remove(),5000);
 }
 
 // INTERVALS
-setInterval(addChat,1500);
-setInterval(addEmoji,700);
+setInterval(addComment, 2000);
+setInterval(addEmoji, 900);
 
 // INIT
 changePuzzle();
