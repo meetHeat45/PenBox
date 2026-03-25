@@ -12,7 +12,6 @@ body {
     background: linear-gradient(135deg, #020617, #0f172a);
     color: white;
     min-height: 100vh;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,7 +20,7 @@ body {
 /* ⏳ Timer */
 .timer-container {
     width: 100%;
-    margin-top: 60px;
+    margin-top: 50px;
 }
 
 .timer-text {
@@ -50,23 +49,25 @@ body {
     100% { opacity: 1; }
 }
 
+/* Content */
 h1 {
-    font-size: 2.5rem;
-    margin: 25px 0 5px 0;
+    font-size: 2.3rem;
+    margin: 20px 0 5px 0;
 }
 
 .channel {
     color: #94a3b8;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     font-size: 1rem;
 }
 
 .puzzle {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: bold;
-    margin: 30px 0;
+    margin: 25px 0;
     text-align: center;
     line-height: 1.6;
+    padding: 0 10px;
 }
 
 .comment {
@@ -76,7 +77,7 @@ h1 {
 }
 
 .footer {
-    margin-top: 25px;
+    margin-top: 20px;
     font-size: 1.2rem;
     font-weight: bold;
     color: #ff4d4d;
@@ -115,33 +116,45 @@ h1 {
 <script>
 const puzzles = [
 
-    "Find the next number:<br><br> 2, 6, 7, 21, 22, ?",
+    "Find the next number:<br><br> 5, 11, 23, 47, ?",
 
-    "Brain twist 😈<br><br> If 5 + 3 = 28<br>6 + 2 = 24<br>7 + 4 = ?",
+    "Pattern challenge 🧠<br><br> 2, 5, 10, 17, 26, ?",
 
-    "Quick logic ⚡<br><br> If 1 = 5<br>2 = 25<br>3 = 325<br>4 = 4325<br>Then 5 = ?",
+    "Sequence logic 🔥<br><br> 1, 2, 6, 24, 120, ?",
 
-    "Pattern challenge 🧠<br><br> 3 → 9<br>4 → 16<br>5 → 25<br>6 → ?",
+    "Number twist 😈<br><br> 7, 14, 28, 56, ?",
 
-    "Think fast 🤯<br><br> If you multiply me by 2 and add 10, you get 30. What number am I?",
+    "Solve fast ⏳<br><br> x² - 7x + 12 = 0<br>Find x",
 
-    "Number trick 😈<br><br> 8 × 8 + 8 ÷ 8 = ?",
+    "Brain test 🧠<br><br> x² + x - 12 = 0<br>Find x",
 
-    "Visual logic 🔥<br><br> 10 = 2<br>25 = 5<br>36 = 6<br>49 = ?",
+    "Quadratic challenge 😈<br><br> 2x² - 8x + 6 = 0<br>Find x",
 
-    "Trap question ⚠️<br><br> If a plane crashes on the border of India and Nepal, where do you bury survivors?",
+    "Trap question ⚠️<br><br> A doctor gives you 3 pills and tells you to take one every 30 minutes. How long will they last?",
 
-    "Brain teaser 😏<br><br> I speak without a mouth and hear without ears. What am I?",
+    "Think carefully 😏<br><br> What has keys but can't open locks?",
 
-    "Speed test ⏳<br><br> 100 ÷ 5 × 2 + 10 = ?",
+    "Logic trap 🔥<br><br> If you drop a red stone in the blue sea, what will it become?",
 
-    "Odd one out 👀<br><br> 64, 27, 16, 125, 36",
+    "Brain twist 😈<br><br> If 2 + 3 = 13<br>3 + 4 = 25<br>4 + 5 = ?",
 
-    "Smart trick 😈<br><br> A bat and ball cost ₹110 total. Bat costs ₹100 more than ball. Ball costs?",
+    "Quick logic ⚡<br><br> If CAT = 24<br>DOG = 26<br>What is BAT = ?",
 
-    "Pattern killer 🔥<br><br> 1, 3, 6, 10, 15, ?",
+    "Visual logic 🔥<br><br> 121 = 11<br>144 = 12<br>169 = ?",
 
-    "Simple but deadly 😏<br><br> What comes next:<br> J, F, M, A, M, J, ?"
+    "Speed test ⏳<br><br> 50 + 50 × 2 = ?",
+
+    "Number trick 😈<br><br> 9 × 9 - 9 ÷ 9 = ?",
+
+    "Brain teaser 😏<br><br> The more you take, the more you leave behind. What am I?",
+
+    "Simple but deadly 😏<br><br> B, E, H, K, ?",
+
+    "Odd one out 👀<br><br> 8, 27, 64, 100, 125",
+
+    "Find the number 🔍<br><br> I am a number. If you square me and add 5, you get 30. What number am I?",
+
+    "Smart math 😈<br><br> A number is increased by 20% and becomes 120. What was the original number?"
 ];
 
 let index = 0;
@@ -176,6 +189,7 @@ function updateTimer() {
     }
 }
 
+// Auto start
 changePuzzle();
 setInterval(updateTimer, 1000);
 </script>
